@@ -19,12 +19,12 @@ const routes = [
         name: 'User',
         component: () => import('../components/User.vue'),
       },
+      {
+        path: '/save',
+        name: 'Save',
+        component: () => import('../components/Save.vue'),
+      },
     ],
-  },
-  {
-    path: '/save',
-    name: 'Save',
-    component: () => import('../views/Save.vue'),
   },
 ];
 

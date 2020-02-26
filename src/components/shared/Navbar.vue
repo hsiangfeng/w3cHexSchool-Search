@@ -15,7 +15,7 @@
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        <li class="nav-item active">
+        <li class="nav-item">
           <router-link class="nav-link" :to="{name: 'Index'}">
             首頁
             <span class="sr-only">(current)</span>
@@ -25,7 +25,7 @@
           <router-link class="nav-link" :to="{name: 'User'}">看文章</router-link>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">關注的系列</a>
+          <router-link class="nav-link" :to="{name: 'Save'}">已關注的文章</router-link>
         </li>
       </ul>
     </div>

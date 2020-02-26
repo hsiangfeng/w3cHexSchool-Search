@@ -17,11 +17,13 @@
           >支援模糊搜尋，但要注意英文大小寫問題。</small>
         </div>
       </form>
-      <div class="card-columns">
-        <div class="card" v-for="(item, index) in filterData" :key="index">
+      <button type="button" class="btn btn-primary my-2" @click.prevent="reverse =!reverse; reverSort()">時間排序</button>
+      <div class="row">
+        <div class="col-md-4 col-6 mb-2" v-for="(item, index) in filterData" :key="index">
+        <div class="card">
           <div class="card-body">
             <!-- 目前挑戰狀態 -->
-            <Medals :nowNumber="item.blogList.length" @status="openModel" />
+            <Medals :nowNumber="item.blogList.length"/>
             <h5 class="card-title">
               <a href="#" @click.prevent="saveUser(item, item.blogUrl)" title="關注該系列文章">
                 <font-awesome-icon :icon="['far','star']" v-if="item.status"/>
@@ -47,9 +49,14 @@
             </li>
           </ul>
         </div>
+        </div>
       </div>
     </div>
-    <Models :messages="modelMessate" />
+    <div id="gotop" class="gotop" >
+      <a href="#" @click.prevent="scrollTop">
+        <font-awesome-icon :icon="['fas','arrow-up']"/>
+      </a>
+    </div>
   </div>
 </template>
 
@@ -57,7 +64,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import $ from 'jquery';
 import Medals from './Medals.vue';
-import Models from './Models.vue';
 
 interface UserData {
   blogList: Array<object>;
@@ -71,7 +77,6 @@ interface UserData {
   name: 'User',
   components: {
     Medals,
-    Models,
   },
 })
 export default class User extends Vue {
@@ -81,7 +86,7 @@ export default class User extends Vue {
 
   search = '';
 
-  modelMessate = '';
+  reverse = false;
 
   private starData: Array<string> = [];
 
@@ -108,10 +113,12 @@ export default class User extends Vue {
     });
   }
 
-  openModel(status: string) {
-    const message: string = status;
-    this.modelMessate = message;
-    $('#model').modal('toggle');
+  reverSort() {
+    if (this.reverse) {
+      this.data.sort((a, b) => (a.updateTime < b.updateTime ? -1 : 1));
+    } else {
+      this.data.sort((a, b) => (a.updateTime < b.updateTime ? 1 : -1));
+    }
   }
 
   saveUser(item: UserData, url: string) {
@@ -124,8 +131,44 @@ export default class User extends Vue {
     }
   }
 
+  scrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }
+
   created() {
     this.getUserData();
+
+    $(window).scroll(() => {
+      const top = $(document).scrollTop();
+      if (top >= 200) {
+        $('#gotop').css('opacity', 1);
+      } else {
+        $('#gotop').css('opacity', 0);
+      }
+    });
   }
 }
 </script>
+
+<style lang="scss">
+  .gotop {
+    opacity: 0;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    background-color: #00cc99;
+    transition: all 0.3s;
+    a {
+      color:white;
+    }
+  }
+</style>
