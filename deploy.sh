@@ -16,7 +16,7 @@ git init
 git add -A
 git commit -m 'deploy'
 
-git push -f git@github.com:hsiangfeng/vue-maskMap.git master:gh-pages
+git push -f git@github.com:hsiangfeng/w3cHexSchool-Search.git master:gh-pages
 
 cd -
 
