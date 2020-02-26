@@ -3,7 +3,7 @@
     <div class="container">
       <form>
         <div class="form-group">
-          <label for="filterInputName">搜尋文章</label>
+          <label for="filterInputName">搜尋(支援作者名稱及部落格網址)</label>
           <input
             type="text"
             class="form-control"
@@ -14,7 +14,7 @@
           <small
             id="emailHelp"
             class="form-text text-muted"
-          >僅限搜名稱，支援模糊搜尋，但要英文注意大小寫問題。</small>
+          >支援模糊搜尋，但要注意英文大小寫問題。</small>
         </div>
       </form>
       <div class="card-columns">
@@ -23,10 +23,11 @@
             <!-- 目前挑戰狀態 -->
             <Medals :nowNumber="item.blogList.length" @status="openModel" />
             <h5 class="card-title">
-              <a href="#" @click="saveUser(item.blogUrl)">
-                <font-awesome-icon :icon="['far','star']" />
+              <a href="#" @click.prevent="saveUser(item, item.blogUrl)" title="關注該系列文章">
+                <font-awesome-icon :icon="['far','star']" v-if="item.status"/>
+                <font-awesome-icon :icon="['fas','star']" v-else/>
               </a>
-              <a :href="item.blogUrl" class="name-sub">{{ item.name || '參賽者未公開暱稱'}}</a>
+              <a :href="item.blogUrl" class="name-sub" target="_blank">{{ item.name || '參賽者未公開暱稱'}}</a>
             </h5>
             <p class="card-text">更新時間：{{ item.updateTime }}</p>
             <h6>目前進度：</h6>
@@ -42,7 +43,7 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item" v-for="(blog, index) in item.blogList" :key="index">
-              <a :href="blog.url" class="name-sub">{{ index + 1 }}.{{ blog.title }}</a>
+              <a :href="blog.url" class="name-sub" target="_blank">{{ index + 1 }}.{{ blog.title }}</a>
             </li>
           </ul>
         </div>
@@ -63,6 +64,7 @@ interface UserData {
   blogUrl: string;
   name: string;
   updateTime: string;
+  status: boolean;
 }
 
 @Component({
@@ -81,21 +83,27 @@ export default class User extends Vue {
 
   modelMessate = '';
 
-  private cacheData: Array<string> = [];
+  private starData: Array<string> = [];
 
   get filterData() {
-    return this.data.filter((item) => {
-      if (this.search.trim() === item.name) {
-        return item.name === this.search.trim();
-      }
-      return String(item.name).match(this.search.trim());
-    });
+    return this.data.filter((item) => String(item.blogUrl).match(this.search.trim()) || String(item.name).match(this.search.trim()));
   }
 
   private getUserData() {
     this.isLoading = true;
     this.axios.get(process.env.VUE_APP_DATAURL).then((res) => {
-      this.data = res.data;
+      const cacheData: Array<UserData> = res.data;
+      cacheData.forEach((item) => {
+        const cacheItem = item;
+        this.starData = JSON.parse(localStorage.getItem('w3hexschoolUser') || '[]');
+        const result = this.starData.find((url: string) => url === item.blogUrl);
+        if (result === undefined) {
+          cacheItem.status = true;
+        } else {
+          cacheItem.status = false;
+        }
+      });
+      this.data = cacheData;
       this.isLoading = false;
     });
   }
@@ -106,11 +114,13 @@ export default class User extends Vue {
     $('#model').modal('toggle');
   }
 
-  saveUser(url: string) {
-    const data = this.cacheData.find((item) => item === url);
+  saveUser(item: UserData, url: string) {
+    const data = this.starData.find((blogItem) => blogItem === url);
+    const cacheItem = item;
+    cacheItem.status = !cacheItem.status;
     if (data === undefined) {
-      this.cacheData.push(url);
-      localStorage.setItem('user', JSON.stringify(this.cacheData));
+      this.starData.push(url);
+      localStorage.setItem('w3hexschoolUser', JSON.stringify(this.starData));
     }
   }
 

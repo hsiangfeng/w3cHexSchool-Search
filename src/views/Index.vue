@@ -82,6 +82,8 @@ export default class Index extends Vue {
 
   private isLoading = true;
 
+  private delay = 1000;
+
   private ICountUpOptions = {
     people: 0,
     article: 0,
