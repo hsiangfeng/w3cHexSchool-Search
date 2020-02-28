@@ -1,8 +1,8 @@
 <template>
   <div class="jumbotron jumbotron-fluid">
     <div class="container">
-      <h1 class="display-4">W3HexSchool 全馬鐵人挑戰賽</h1>
-      <p class="lead">這是透過六角學院所提供的 W3HexSchool API 所製作的查詢系統，其主要方便確認自己是否報名成功。</p>
+      <h1 class="display-5">W3HexSchool 全馬挑戰</h1>
+      <p class="lead">這是透過六角學院所提供的 W3CHexSchool API 所製作的查詢系統，其主要方便確認自己是否報名成功以及關注系列文章。</p>
       <p>
         <small>W3HexSchool API 三十分鐘更新一次。</small>
       </p>
@@ -16,12 +16,3 @@
     </div>
   </div>
 </template>
-
-<script>
-export default {
-
-};
-</script>
-
-<style>
-</style>

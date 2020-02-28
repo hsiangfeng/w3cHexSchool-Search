@@ -55,19 +55,14 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import Header from '@/components/shared/Header.vue';
 import ICountUp from 'vue-countup-v2';
+import Header from '@/components/shared/Header.vue';
 
 interface UserData {
   blogList: Array<object>;
   blogUrl: string;
   name: string;
   updateTime: string;
-}
-
-interface BlogList {
-  title: string;
-  url: string;
 }
 
 @Component({
@@ -91,7 +86,7 @@ export default class Index extends Vue {
     private: 0,
   };
 
-  private getUserData() {
+  private getData() {
     this.isLoading = true;
     this.axios.get(process.env.VUE_APP_DATAURL).then((res) => {
       this.data = res.data;
@@ -100,19 +95,19 @@ export default class Index extends Vue {
   }
 
   private getArticle() {
-    const cacheData: Array<UserData> = this.data;
     const articleArray: Array<object> = [];
-    cacheData.forEach((data) => {
+    const cachePublic: Array<UserData> = [];
+    const cachePrivate: Array<UserData> = [];
+
+    this.data.forEach((data) => {
       const { blogList } = data;
       blogList.forEach((item) => {
         articleArray.push(item);
       });
     });
 
-    const cachePublic: Array<UserData> = [];
-    const cachePrivate: Array<UserData> = [];
 
-    cacheData.forEach((data) => {
+    this.data.forEach((data) => {
       if (data.name !== null) {
         cachePublic.push(data);
       } else {
@@ -128,8 +123,8 @@ export default class Index extends Vue {
     this.isLoading = false;
   }
 
-  private created() {
-    this.getUserData();
+  public created() {
+    this.getData();
   }
 }
 </script>

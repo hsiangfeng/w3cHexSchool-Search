@@ -1,5 +1,6 @@
 <template>
   <div class="user">
+    <loading :active.sync="isLoading"></loading>
     <div class="container">
       <h2>你關注的參賽者有<span class="name-sub">{{ data.length }}</span> 位。</h2>
       <div class="row">
@@ -58,6 +59,7 @@ interface UserData {
     Medals,
   },
 })
+
 export default class Save extends Vue {
   private data: Array<UserData> = [];
 
@@ -83,7 +85,7 @@ export default class Save extends Vue {
     });
   }
 
-  filterData(data: Array<UserData>) {
+  private filterData(data: Array<UserData>) {
     const localUser = JSON.parse(
       localStorage.getItem('w3hexschoolUser') || '[]',
     );
@@ -98,7 +100,7 @@ export default class Save extends Vue {
     this.isLoading = false;
   }
 
-  removeStar(item: UserData) {
+  private removeStar(item: UserData) {
     this.starData.forEach((blogUrl, index) => {
       if (item.blogUrl === blogUrl) {
         this.starData.splice(index, 1);
@@ -108,7 +110,7 @@ export default class Save extends Vue {
     this.getUserData();
   }
 
-  created() {
+  public created() {
     this.getUserData();
   }
 }

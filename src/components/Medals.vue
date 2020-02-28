@@ -36,7 +36,9 @@
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
-@Component
+@Component({
+})
+
 export default class Medals extends Vue {
   @Prop() private nowNumber!: number;
 }
