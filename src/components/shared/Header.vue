@@ -16,3 +16,14 @@
     </div>
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component({
+  name: 'Header',
+})
+
+export default class Navbar extends Vue {
+}
+</script>

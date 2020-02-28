@@ -55,8 +55,8 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ICountUp from 'vue-countup-v2';
 import Header from '@/components/shared/Header.vue';
+import ICountUp from 'vue-countup-v2';
 
 interface UserData {
   blogList: Array<object>;
@@ -72,6 +72,7 @@ interface UserData {
     ICountUp,
   },
 })
+
 export default class Index extends Vue {
   private data: Array<UserData> = [];
 
@@ -86,7 +87,7 @@ export default class Index extends Vue {
     private: 0,
   };
 
-  private getData() {
+  private getData(): void {
     this.isLoading = true;
     this.axios.get(process.env.VUE_APP_DATAURL).then((res) => {
       this.data = res.data;
@@ -94,7 +95,7 @@ export default class Index extends Vue {
     });
   }
 
-  private getArticle() {
+  private getArticle(): void {
     const articleArray: Array<object> = [];
     const cachePublic: Array<UserData> = [];
     const cachePrivate: Array<UserData> = [];
@@ -123,7 +124,7 @@ export default class Index extends Vue {
     this.isLoading = false;
   }
 
-  public created() {
+  public created(): void {
     this.getData();
   }
 }

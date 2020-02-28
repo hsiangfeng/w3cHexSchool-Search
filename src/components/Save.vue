@@ -2,7 +2,7 @@
   <div class="user">
     <loading :active.sync="isLoading"></loading>
     <div class="container">
-      <h2>你關注的參賽者有<span class="name-sub">{{ data.length }}</span> 位。</h2>
+      <h2>你關注的參賽者有 <span class="name-sub">{{ data.length }}</span> 位。</h2>
       <div class="row">
         <div class="col-md-4 col-6 mb-2" v-for="(item, index) in data" :key="index">
           <div class="card">
@@ -29,21 +29,25 @@
                 >{{item.blogList.length * 2.5 }} %</div>
               </div>
             </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item" v-for="(blog, index) in item.blogList" :key="index">
-                <a :href="blog.url" class="name-sub">{{ index + 1 }}.{{ blog.title }}</a>
-              </li>
-            </ul>
+            <div class="card-footer text-muted">
+              <button class="btn btn-primary w-100" @click.prevent="openModel(item)">
+                文章列表
+                <span class="badge badge-pill badge-success">{{ item.blogList.length}}</span>
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
+    <Modals :modelData="modelData" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
+import $ from 'jquery';
 import Medals from '@/components/Medals.vue';
+import Modals from './Modals.vue';
 
 interface UserData {
   blogList: Array<object>;
@@ -57,6 +61,7 @@ interface UserData {
   name: 'Save',
   components: {
     Medals,
+    Modals,
   },
 })
 
@@ -67,7 +72,9 @@ export default class Save extends Vue {
 
   private starData: Array<string> = [];
 
-  private getUserData() {
+  private modelData = {};
+
+  private getUserData(): void {
     this.isLoading = true;
     this.axios.get(process.env.VUE_APP_DATAURL).then((res) => {
       const cacheData: Array<UserData> = res.data;
@@ -85,7 +92,7 @@ export default class Save extends Vue {
     });
   }
 
-  private filterData(data: Array<UserData>) {
+  private filterData(data: Array<UserData>): void {
     const localUser = JSON.parse(
       localStorage.getItem('w3hexschoolUser') || '[]',
     );
@@ -100,7 +107,7 @@ export default class Save extends Vue {
     this.isLoading = false;
   }
 
-  private removeStar(item: UserData) {
+  private removeStar(item: UserData): void {
     this.starData.forEach((blogUrl, index) => {
       if (item.blogUrl === blogUrl) {
         this.starData.splice(index, 1);
@@ -110,7 +117,12 @@ export default class Save extends Vue {
     this.getUserData();
   }
 
-  public created() {
+  private openModel(item: UserData): void {
+    this.modelData = item;
+    $('#myModel').modal('show');
+  }
+
+  public created(): void {
     this.getUserData();
   }
 }
