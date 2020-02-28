@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row justify-content-center align-items-center mb-3">
         <div class="col-md-8">
-          <form>
+          <form @keyup.enter.prevent>
             <div class="form-group">
               <label for="filterInputName">搜尋(支援作者名稱及部落格網址)</label>
               <input
