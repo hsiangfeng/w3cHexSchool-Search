@@ -43,7 +43,7 @@
               <h5 class="card-title">
                 <a
                   href="#"
-                  @click.prevent="saveData(item, item.blogUrl); item.status = !item.status"
+                  @click.prevent="saveData(item, item.keyID); item.status = !item.status"
                   v-if="item.status"
                   title="加入關注"
                 >
@@ -51,7 +51,7 @@
                 </a>
                 <a
                   href="#"
-                  @click.prevent="removeData(item, item.blogUrl); item.status = !item.status"
+                  @click.prevent="removeData(item, item.keyID); item.status = !item.status"
                   v-else
                   title="取消關注"
                 >
@@ -103,6 +103,7 @@ import Modals from './Modals.vue';
 import Medals from './Medals.vue';
 
 interface UserData {
+  keyID: string;
   blogList: Array<object>;
   blogUrl: string;
   name: string;
@@ -174,7 +175,7 @@ export default class User extends Vue {
         );
 
         const result = this.starData.find(
-          (url: string) => url === item.blogUrl,
+          (keyID: string) => keyID === item.keyID,
         );
         if (result === undefined) {
           cacheItem.status = true;
@@ -197,11 +198,11 @@ export default class User extends Vue {
     }
   }
 
-  private saveData(item: UserData, url: string): void {
-    const findData = this.starData.find((blogItem) => blogItem === url);
+  private saveData(item: UserData, keyID: string): void {
+    const findData = this.starData.find((blogItem) => blogItem === keyID);
 
     if (findData === undefined) {
-      this.starData.push(url);
+      this.starData.push(keyID);
       localStorage.setItem('w3hexschoolUser', JSON.stringify(this.starData));
     }
   }
@@ -221,8 +222,8 @@ export default class User extends Vue {
   }
 
   private removeData(item: UserData): void {
-    this.starData.forEach((blogUrl, index) => {
-      if (item.blogUrl === blogUrl) {
+    this.starData.forEach((data, index) => {
+      if (item.keyID === data) {
         this.starData.splice(index, 1);
       }
     });

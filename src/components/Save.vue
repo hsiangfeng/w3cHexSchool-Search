@@ -6,7 +6,6 @@
       <div class="row">
         <div class="col-md-4 col-6 mb-2" v-for="(item, index) in data" :key="index">
           <div class="card">
-            <!-- <img src="..." class="card-img-top" alt="..."> -->
             <div class="card-body">
               <!-- 目前挑戰狀態 -->
               <Medals :nowNumber="item.blogList.length" />
@@ -50,6 +49,7 @@ import Medals from '@/components/Medals.vue';
 import Modals from './Modals.vue';
 
 interface UserData {
+  keyID: string;
   blogList: Array<object>;
   blogUrl: string;
   name: string;
@@ -81,7 +81,7 @@ export default class Save extends Vue {
       cacheData.forEach((item) => {
         const cacheItem = item;
         this.starData = JSON.parse(localStorage.getItem('w3hexschoolUser') || '[]');
-        const result = this.starData.find((url: string) => url === item.blogUrl);
+        const result = this.starData.find((keyID: string) => keyID === item.keyID);
         if (result === undefined) {
           cacheItem.status = true;
         } else {
@@ -98,7 +98,7 @@ export default class Save extends Vue {
     );
     const arrayData: Array<UserData> = [];
     data.forEach((item) => {
-      const cacheData = localUser.find((url: string) => url === item.blogUrl);
+      const cacheData = localUser.find((keyID: string) => keyID === item.keyID);
       if (cacheData !== undefined) {
         arrayData.push(item);
       }
@@ -108,8 +108,8 @@ export default class Save extends Vue {
   }
 
   private removeStar(item: UserData): void {
-    this.starData.forEach((blogUrl, index) => {
-      if (item.blogUrl === blogUrl) {
+    this.starData.forEach((data, index) => {
+      if (item.keyID === data) {
         this.starData.splice(index, 1);
       }
     });

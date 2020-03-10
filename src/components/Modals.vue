@@ -33,6 +33,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 
 interface UserData {
+  keyID: string;
   blogList: Array<object>;
   blogUrl: string;
   name: string;
