@@ -16,20 +16,20 @@
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
       <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'Index'}">
+          <router-link class="nav-link" :to="{ name: 'Index' }">
             <font-awesome-icon :icon="['fas','home']"/>
             首頁
             <span class="sr-only">(current)</span>
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'User'}">
+          <router-link class="nav-link" :to="{ name: 'User' }">
             <font-awesome-icon :icon="['fas','newspaper']"/>
             文章列表
             </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link" :to="{name: 'Save'}">
+          <router-link class="nav-link" :to="{ name: 'Save' }">
             <font-awesome-icon :icon="['fas','heart']"/>
             關注的文章
             </router-link>

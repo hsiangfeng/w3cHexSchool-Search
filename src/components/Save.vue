@@ -14,7 +14,7 @@
                   <font-awesome-icon :icon="['far','star']" v-if="item.status"/>
                   <font-awesome-icon :icon="['fas','star']" v-else/>
                 </a>
-                <a :href="item.blogUrl" class="name-sub">{{ item.name || '參賽者未公開暱稱'}}</a>
+                <a :href="item.blogUrl" class="name-sub">{{ item.name || '參賽者未公開暱稱' }}</a>
               </h5>
               <p class="card-text">更新時間：{{ item.updateTime }}</p>
               <h6>目前進度：</h6>
@@ -22,7 +22,7 @@
                 <div
                   class="progress-bar progress-bar-striped progress-bar-animated"
                   role="progressbar"
-                  :style="`width: ${(item.blogList.length * 2.5)}%;`"
+                  :style="`width: ${ (item.blogList.length * 2.5) }%;`"
                   aria-valuemin="0"
                   aria-valuemax="100"
                 >{{item.blogList.length * 2.5 }} %</div>
@@ -31,7 +31,7 @@
             <div class="card-footer text-muted">
               <button class="btn btn-primary w-100" @click.prevent="openModel(item)">
                 文章列表
-                <span class="badge badge-pill badge-success">{{ item.blogList.length}}</span>
+                <span class="badge badge-pill badge-success">{{ item.blogList.length }}</span>
               </button>
             </div>
           </div>
