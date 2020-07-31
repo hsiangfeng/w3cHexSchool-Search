@@ -154,14 +154,19 @@ export default class Index extends Vue {
   private getAwarded(): void {
     this.data.forEach((data) => {
       const leng: number = data.blogList.length;
+      // 由於得獎是每一個獎項都會得獎
+      // 所以當到達特定範圍時每一個獎狀都會增加
       switch (leng) {
         case 10:
           this.copper += 1;
           break;
         case 25:
+          this.copper += 1;
           this.silver += 1;
           break;
         case 40:
+          this.copper += 1;
+          this.silver += 1;
           this.gold += 1;
           break;
         default:
