@@ -30,7 +30,7 @@
               type="button"
               class="btn btn-primary my-2"
               @click.prevent="reverse =!reverse; reverSort()"
-            >時間排序</button>
+            >時間升降排序</button>
           </form>
         </div>
       </div>
@@ -66,6 +66,23 @@
                 >{{ item.name || '參賽者未公開暱稱' }}</a>
               </h5>
               <p class="card-text">更新時間：{{ item.updateTime }}</p>
+              <div>
+                已取得的獎牌：
+                <ul class="d-flex list-unstyled">
+                  <li v-if="item.blogList.length <= 9">
+                    雖然你還沒得獎，但我相信你可以的 :D
+                  </li>
+                  <li v-if="item.blogList.length >= 10">
+                    <span class="badge badge-success mr-1">銅角獎🏅</span>
+                  </li>
+                  <li v-if="item.blogList.length >= 25">
+                    <span class="badge badge-success mr-1">銀角獎🎖</span>
+                  </li>
+                  <li v-if="item.blogList.length >= 40">
+                    <span class="badge badge-success">金角獎🏆</span>
+                  </li>
+                </ul>
+              </div>
               <h6>目前進度：</h6>
               <div class="progress">
                 <div
@@ -118,7 +135,6 @@ interface UserData {
     Modals,
   },
 })
-
 export default class User extends Vue {
   private data: Array<UserData> = [];
 
@@ -213,7 +229,7 @@ export default class User extends Vue {
       this.data = this.dataBackup;
     } else {
       this.data.forEach((item: UserData) => {
-        if (item.blogList.length === this.schedule) {
+        if (item.blogList.length >= this.schedule) {
           cacheData.push(item);
         }
       });

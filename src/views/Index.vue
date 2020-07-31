@@ -2,8 +2,9 @@
   <div>
     <loading :active.sync="isLoading"></loading>
     <div class="container">
-      <Header/>
-      <div class="row">
+      <Header />
+      <h3 class="h3 text-center">參賽人數</h3>
+      <div class="row mb-5">
         <div class="col-md-3 col-6">
           <div class="index">
             <div class="index__round bg-primary text-white">
@@ -17,7 +18,7 @@
         </div>
         <div class="col-md-3 col-6">
           <div class="index">
-            <div class="index__round  bg-principal text-primary">
+            <div class="index__round bg-principal text-primary">
               <div class="index__round__number">
                 文章數量
                 <br />
@@ -49,6 +50,53 @@
           </div>
         </div>
       </div>
+      <h3 class="h3 text-center">得獎戰況</h3>
+      <div class="row">
+        <div class="col-md-3">
+          <div class="index">
+            <div class="index__round bg-principal text-primary">
+              <div class="index__round__number">
+                銅角獎🏅 人數
+                <br />
+                <ICountUp :delay="delay" :endVal="copper"></ICountUp>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="index">
+            <div class="index__round bg-principal text-primary">
+              <div class="index__round__number">
+                銀角獎🎖 人數
+                <br />
+                <ICountUp :delay="delay" :endVal="silver"></ICountUp>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="index">
+            <div class="index__round bg-principal text-primary">
+              <div class="index__round__number">
+                金角獎🏆 人數
+                <br />
+                <ICountUp :delay="delay" :endVal="gold"></ICountUp>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="index">
+            <div class="index__round bg-principal text-primary">
+              <div class="index__round__number">
+                未得獎人數
+                <br />
+                <ICountUp :delay="delay" :endVal="noPrize"></ICountUp>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +120,6 @@ interface UserData {
     ICountUp,
   },
 })
-
 export default class Index extends Vue {
   private data: Array<UserData> = [];
 
@@ -87,11 +134,40 @@ export default class Index extends Vue {
     private: 0,
   };
 
+  private copper = 0;
+
+  private silver = 0;
+
+  private gold = 0;
+
+  private noPrize = 0;
+
   private getData(): void {
     this.isLoading = true;
     this.axios.get(process.env.VUE_APP_DATAURL).then((res) => {
       this.data = res.data;
       this.getArticle();
+      this.getAwarded();
+    });
+  }
+
+  private getAwarded(): void {
+    this.data.forEach((data) => {
+      const leng: number = data.blogList.length;
+      switch (leng) {
+        case 10:
+          this.copper += 1;
+          break;
+        case 25:
+          this.silver += 1;
+          break;
+        case 40:
+          this.gold += 1;
+          break;
+        default:
+          this.noPrize += 1;
+          break;
+      }
     });
   }
 
@@ -106,7 +182,6 @@ export default class Index extends Vue {
         articleArray.push(item);
       });
     });
-
 
     this.data.forEach((data) => {
       if (data.name !== null) {
@@ -132,7 +207,7 @@ export default class Index extends Vue {
 
 <style lang="scss">
 $main: #00cc99;
-$principal: #69F0AE;
+$principal: #69f0ae;
 
 .bg-main {
   background-color: $main;
@@ -163,7 +238,7 @@ $principal: #69F0AE;
     width: 150px;
     height: 150px;
   }
-  @media (max-width:992px) {
+  @media (max-width: 992px) {
     width: 150px;
     height: 150px;
   }
