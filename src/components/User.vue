@@ -32,6 +32,7 @@
               @click.prevent="reverse =!reverse; reverSort()"
             >時間升降排序</button>
           </form>
+          <small id="emailHelp" class="form-text text-muted">該分類文章數量 {{ filterData.length }} 篇</small>
         </div>
       </div>
       <div class="row">
@@ -224,17 +225,15 @@ export default class User extends Vue {
   }
 
   private filterArticle(): void {
+    console.log(this.schedule);
     const cacheData: Array<UserData> = [];
-    if (this.schedule === 0) {
-      this.data = this.dataBackup;
-    } else {
-      this.data.forEach((item: UserData) => {
-        if (item.blogList.length >= this.schedule) {
-          cacheData.push(item);
-        }
-      });
-      this.data = cacheData;
-    }
+    this.data = this.dataBackup;
+    this.data.forEach((item: UserData) => {
+      if (item.blogList.length >= this.schedule) {
+        cacheData.push(item);
+      }
+    });
+    this.data = cacheData;
   }
 
   private removeData(item: UserData): void {

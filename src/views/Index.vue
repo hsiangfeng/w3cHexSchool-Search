@@ -156,23 +156,10 @@ export default class Index extends Vue {
       const leng: number = data.blogList.length;
       // 由於得獎是每一個獎項都會得獎
       // 所以當到達特定範圍時每一個獎狀都會增加
-      switch (leng) {
-        case 10:
-          this.copper += 1;
-          break;
-        case 25:
-          this.copper += 1;
-          this.silver += 1;
-          break;
-        case 40:
-          this.copper += 1;
-          this.silver += 1;
-          this.gold += 1;
-          break;
-        default:
-          this.noPrize += 1;
-          break;
-      }
+      this.copper += leng >= 10 ? 1 : 0;
+      this.silver += leng >= 25 ? 1 : 0;
+      this.gold += leng >= 40 ? 1 : 0;
+      this.noPrize += leng < 10 ? 1 : 0;
     });
   }
 
