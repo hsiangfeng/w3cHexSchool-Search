@@ -225,7 +225,6 @@ export default class User extends Vue {
   }
 
   private filterArticle(): void {
-    console.log(this.schedule);
     const cacheData: Array<UserData> = [];
     this.data = this.dataBackup;
     this.data.forEach((item: UserData) => {
